@@ -1,0 +1,374 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {
+      "Bannerlord.BuildResources/1.0.0.39": {
+        "type": "package",
+        "build": {
+          "build/Bannerlord.BuildResources.props": {},
+          "build/Bannerlord.BuildResources.targets": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/Bannerlord.BuildResources.props": {},
+          "buildMultiTargeting/Bannerlord.BuildResources.targets": {}
+        }
+      },
+      "IsExternalInit/1.0.1": {
+        "type": "package",
+        "contentFiles": {
+          "contentFiles/cs/net40/IsExternalInit/IsExternalInit.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "IsExternalInit/IsExternalInit.cs"
+          }
+        },
+        "build": {
+          "build/net40/IsExternalInit.targets": {}
+        }
+      },
+      "Newtonsoft.Json/11.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
+      "Nullable/1.3.0": {
+        "type": "package",
+        "contentFiles": {
+          "contentFiles/cs/net40/Nullable/AllowNullAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/AllowNullAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/DisallowNullAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/DisallowNullAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/DoesNotReturnAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/DoesNotReturnAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/DoesNotReturnIfAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/DoesNotReturnIfAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/MaybeNullAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/MaybeNullAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/MaybeNullWhenAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/MaybeNullWhenAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/MemberNotNullAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/MemberNotNullAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/MemberNotNullWhenAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/MemberNotNullWhenAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/NotNullAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/NotNullAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/NotNullIfNotNullAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/NotNullIfNotNullAttribute.cs"
+          },
+          "contentFiles/cs/net40/Nullable/NotNullWhenAttribute.cs.pp": {
+            "buildAction": "Compile",
+            "codeLanguage": "cs",
+            "copyToOutput": false,
+            "ppOutputPath": "Nullable/NotNullWhenAttribute.cs"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Bannerlord.BuildResources/1.0.0.39": {
+      "sha512": "ZpN+PL3rkm1xaAwukfEDPTOXwMk9Zqob2Q5ZwaoXGvsFYPJNZpdfoH6L6YnBotiiqiwFOsAtT/td6P2iMf2kJw==",
+      "type": "package",
+      "path": "bannerlord.buildresources/1.0.0.39",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bannerlord.buildresources.1.0.0.39.nupkg.sha512",
+        "bannerlord.buildresources.nuspec",
+        "build/Bannerlord.BuildResources.props",
+        "build/Bannerlord.BuildResources.targets",
+        "buildMultiTargeting/Bannerlord.BuildResources.props",
+        "buildMultiTargeting/Bannerlord.BuildResources.targets",
+        "tools/_._"
+      ]
+    },
+    "IsExternalInit/1.0.1": {
+      "sha512": "Md/buF2kqLI/bvmqEwtsCGXKmgbZBzJRW1vz38lyTZKjP4YMXOOSATOSbWg2+S+tlRbrM/8qp9qOBDtqLHBgBw==",
+      "type": "package",
+      "path": "isexternalinit/1.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net20/IsExternalInit.targets",
+        "build/net40/IsExternalInit.targets",
+        "build/netstandard1.0/IsExternalInit.targets",
+        "build/netstandard2.0/IsExternalInit.targets",
+        "content/net20/IsExternalInit/IsExternalInit.cs.pp",
+        "content/net40/IsExternalInit/IsExternalInit.cs.pp",
+        "content/net5.0/IsExternalInit/IsExternalInit.cs.pp",
+        "content/netstandard1.0/IsExternalInit/IsExternalInit.cs.pp",
+        "content/netstandard2.0/IsExternalInit/IsExternalInit.cs.pp",
+        "contentFiles/cs/net20/IsExternalInit/IsExternalInit.cs.pp",
+        "contentFiles/cs/net40/IsExternalInit/IsExternalInit.cs.pp",
+        "contentFiles/cs/net5.0/IsExternalInit/IsExternalInit.cs.pp",
+        "contentFiles/cs/netstandard1.0/IsExternalInit/IsExternalInit.cs.pp",
+        "contentFiles/cs/netstandard2.0/IsExternalInit/IsExternalInit.cs.pp",
+        "icon.png",
+        "isexternalinit.1.0.1.nupkg.sha512",
+        "isexternalinit.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/11.0.2": {
+      "sha512": "IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
+      "type": "package",
+      "path": "newtonsoft.json/11.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.11.0.2.nupkg.sha512",
+        "newtonsoft.json.nuspec"
+      ]
+    },
+    "Nullable/1.3.0": {
+      "sha512": "xHAviTdTY3n+t1nEPN4JPRQR5lI124qRKVw+U9H7dO5sDNPpzoWeo/MQy7dSUmv9eD3k/CJVKokz1tFK+JOzRw==",
+      "type": "package",
+      "path": "nullable/1.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/net20/Nullable/AllowNullAttribute.cs.pp",
+        "content/net20/Nullable/DisallowNullAttribute.cs.pp",
+        "content/net20/Nullable/DoesNotReturnAttribute.cs.pp",
+        "content/net20/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "content/net20/Nullable/MaybeNullAttribute.cs.pp",
+        "content/net20/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "content/net20/Nullable/MemberNotNullAttribute.cs.pp",
+        "content/net20/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "content/net20/Nullable/NotNullAttribute.cs.pp",
+        "content/net20/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "content/net20/Nullable/NotNullWhenAttribute.cs.pp",
+        "content/net40/Nullable/AllowNullAttribute.cs.pp",
+        "content/net40/Nullable/DisallowNullAttribute.cs.pp",
+        "content/net40/Nullable/DoesNotReturnAttribute.cs.pp",
+        "content/net40/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "content/net40/Nullable/MaybeNullAttribute.cs.pp",
+        "content/net40/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "content/net40/Nullable/MemberNotNullAttribute.cs.pp",
+        "content/net40/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "content/net40/Nullable/NotNullAttribute.cs.pp",
+        "content/net40/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "content/net40/Nullable/NotNullWhenAttribute.cs.pp",
+        "content/net5.0/_._",
+        "content/netstandard1.0/Nullable/AllowNullAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/DisallowNullAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/DoesNotReturnAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/MaybeNullAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/MemberNotNullAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/NotNullAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "content/netstandard1.0/Nullable/NotNullWhenAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/AllowNullAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/DisallowNullAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/DoesNotReturnAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/MaybeNullAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/MemberNotNullAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/NotNullAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "content/netstandard2.0/Nullable/NotNullWhenAttribute.cs.pp",
+        "content/netstandard2.1/Nullable/MemberNotNullAttribute.cs.pp",
+        "content/netstandard2.1/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/AllowNullAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/DisallowNullAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/DoesNotReturnAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/MaybeNullAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/MemberNotNullAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/NotNullAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "contentFiles/cs/net20/Nullable/NotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/AllowNullAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/DisallowNullAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/DoesNotReturnAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/MaybeNullAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/MemberNotNullAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/NotNullAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "contentFiles/cs/net40/Nullable/NotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/net5.0/_._",
+        "contentFiles/cs/netstandard1.0/Nullable/AllowNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/DisallowNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/DoesNotReturnAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/MaybeNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/MemberNotNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/NotNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard1.0/Nullable/NotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/AllowNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/DisallowNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/DoesNotReturnAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/DoesNotReturnIfAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/MaybeNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/MaybeNullWhenAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/MemberNotNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/NotNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/NotNullIfNotNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.0/Nullable/NotNullWhenAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.1/Nullable/MemberNotNullAttribute.cs.pp",
+        "contentFiles/cs/netstandard2.1/Nullable/MemberNotNullWhenAttribute.cs.pp",
+        "icon.png",
+        "nullable.1.3.0.nupkg.sha512",
+        "nullable.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "Bannerlord.BuildResources >= 1.0.0.39",
+      "IsExternalInit >= 1.0.1",
+      "Newtonsoft.Json >= 11.0.2",
+      "Nullable >= 1.3.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\stric\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "0.0.1",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\Bastards.csproj",
+      "projectName": "Bastards",
+      "projectPath": "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\Bastards.csproj",
+      "packagesPath": "C:\\Users\\stric\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\stric\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net472"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net472": {
+        "targetAlias": "net472",
+        "dependencies": {
+          "Bannerlord.BuildResources": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[1.0.0.39, )"
+          },
+          "IsExternalInit": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[1.0.1, )"
+          },
+          "Newtonsoft.Json": {
+            "include": "Compile",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[11.0.2, )"
+          },
+          "Nullable": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[1.3.0, )"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
