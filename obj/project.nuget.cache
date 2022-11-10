@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "A5kjqmsFGPXQen5hNWBM6FD0L8RKDxdkD35R2gVi/8Gqi4MXJCD31DYkBHO4G51vEHvMWK/j/xAUExpvLMACbQ==",
+  "dgSpecHash": "eeYbLWU2VVe3oPXZpRdi29TeOLhsMpauj1EoYRnrbvuZldlW7aqxLUqJzDSVAFzUGluHb+3WeEvIdz0POG0+Vw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\Bastards.csproj",
+  "projectFilePath": "C:\\Users\\stric\\source\\repos\\BastardChildren\\BastardChildren\\BastardChildren.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\stric\\.nuget\\packages\\bannerlord.buildresources\\1.0.0.39\\bannerlord.buildresources.1.0.0.39.nupkg.sha512",
     "C:\\Users\\stric\\.nuget\\packages\\isexternalinit\\1.0.1\\isexternalinit.1.0.1.nupkg.sha512",

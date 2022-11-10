@@ -1,0 +1,11 @@
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\bin\x64\Debug\net472\BastardChildren.dll
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\bin\x64\Debug\net472\BastardChildren.pdb
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.csproj.AssemblyReference.cache
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.AssemblyInfoInputs.cache
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.AssemblyInfo.cs
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.csproj.CoreCompileInputs.cache
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.dll
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.pdb
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\bin\x64\Debug\net472\0Harmony.dll
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.csproj.CopyComplete

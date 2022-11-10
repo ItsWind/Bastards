@@ -1,27 +1,29 @@
-﻿using HarmonyLib;
+﻿/*
+using BastardChildren.StaticUtils;
+using HarmonyLib;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 
-namespace Bastards.Patches
-{
+namespace BastardChildren.Patches {
     [HarmonyPatch(typeof(Clan), nameof(Clan.GetHeirApparents))]
-    internal class GetHeirApparentsPatch
-    {
+    internal class GetHeirApparentsPatch {
         [HarmonyPostfix]
-        public static Dictionary<Hero, int> Postfix(Dictionary<Hero, int> heirApparents)
-        {
-            Dictionary<Hero, int> newHeirs = new Dictionary<Hero, int>(heirApparents);
+        private static void Postfix(ref Dictionary<Hero, int> __result) {
+            if (SubModule.Config.GetValueBool("bastardsCanBecomeHeirs")) return;
 
-            foreach (KeyValuePair<Hero, int> entry in heirApparents)
-            {
+            Dictionary<Hero, int> newHeirs = new Dictionary<Hero, int>(__result);
+            foreach (KeyValuePair<Hero, int> entry in __result) {
                 Hero h = entry.Key;
-                if (Utils.IsHeroBastard(h))
-                {
+                if (Utils.GetBastardFromHero(h) != null)
                     newHeirs.Remove(h);
-                }
             }
 
-            return newHeirs;
+            __result = newHeirs;
         }
     }
 }
+*/

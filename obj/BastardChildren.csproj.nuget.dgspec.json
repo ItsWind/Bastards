@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\Bastards.csproj": {}
+    "C:\\Users\\stric\\source\\repos\\BastardChildren\\BastardChildren\\BastardChildren.csproj": {}
   },
   "projects": {
-    "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\Bastards.csproj": {
-      "version": "0.0.1",
+    "C:\\Users\\stric\\source\\repos\\BastardChildren\\BastardChildren\\BastardChildren.csproj": {
+      "version": "5.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\Bastards.csproj",
-        "projectName": "Bastards",
-        "projectPath": "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\Bastards.csproj",
+        "projectUniqueName": "C:\\Users\\stric\\source\\repos\\BastardChildren\\BastardChildren\\BastardChildren.csproj",
+        "projectName": "BastardChildren",
+        "projectPath": "C:\\Users\\stric\\source\\repos\\BastardChildren\\BastardChildren\\BastardChildren.csproj",
         "packagesPath": "C:\\Users\\stric\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\stric\\source\\repos\\Bastards\\Bastards\\obj\\",
+        "outputPath": "C:\\Users\\stric\\source\\repos\\BastardChildren\\BastardChildren\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -69,7 +69,7 @@
               "version": "[1.3.0, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
