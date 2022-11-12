@@ -11,7 +11,18 @@ namespace BastardChildren
 
         private Dictionary<string, double> configValues = new();
         private string configFileString =
-@"-- BIRTH CONFIG --
+@"-- AI CONFIG --
+
+
+aiAllowedToHaveBastards=1
+> Set to 0 to disable AI having bastards of their own. 1 by default
+
+percentChanceOfAIAttemptingConception=30
+> Set the base chance of AI considering conception. Set higher for a better chance or lower for more rarity. 30 by default
+This is also affected by enableTraitAffectedRelationNeeded below.
+
+
+-- BIRTH CONFIG --
 
 
 minDaysUntilBirth=57.0

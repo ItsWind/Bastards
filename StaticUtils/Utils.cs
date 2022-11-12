@@ -1,13 +1,8 @@
 ﻿using BastardChildren.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.Library;
-using TaleWorlds.Localization;
 
 namespace BastardChildren.StaticUtils {
     public static class Utils {
@@ -21,20 +16,25 @@ namespace BastardChildren.StaticUtils {
             InformationManager.ShowInquiry(new InquiryData(displayTitle, displayText, true, false, "Ok", null, null, null), true);
         }
 
-        private static void ModifyHeroRelations(Hero hero1, Hero hero2, int mod) {
+        public static void ModifyHeroRelations(Hero hero1, Hero hero2, int mod) {
+            if (hero1 == null || hero2 == null) return;
+
+            if (hero1 == hero2) return;
+
             int currRelation = CharacterRelationManager.GetHeroRelation(hero1, hero2);
             CharacterRelationManager.SetHeroRelation(hero1, hero2, currRelation + mod);
-        }
-        public static void ModifyPlayerRelations(Hero hero, int mod) {
-            ModifyHeroRelations(Hero.MainHero, hero, mod);
-            int r = 0;
-            int g = 0;
-            int b = 0;
-            if (mod > 0)
-                g = 204;
-            else
-                r = 204;
-            PrintToMessages("Your relation with " + hero.Name + " of " + hero.Clan.Name + " has changed by " + mod + ".", r, g, b);
+
+            if (hero1 == Hero.MainHero || hero2 == Hero.MainHero) {
+                Hero otherHero = hero1 == Hero.MainHero ? hero2 : hero1;
+                int r = 0;
+                int g = 0;
+                int b = 0;
+                if (mod > 0)
+                    g = 204;
+                else
+                    r = 204;
+                PrintToMessages("Your relation with " + otherHero.Name + " has changed by " + mod + ".", r, g, b);
+            }
         }
 
         public static void ModifyPlayerTraitLevel(TraitObject trait, int mod) {
@@ -68,7 +68,26 @@ namespace BastardChildren.StaticUtils {
             return null;
         }
 
-        public static int GetRelationNeededForConceptionAcceptance(Hero otherHero) {
+        public static bool GetIfHeroWouldConceiveBastard(Hero hero) {
+            CharacterObject charObj = hero.CharacterObject;
+            int honorLevel = charObj.GetTraitLevel(DefaultTraits.Honor);
+            int calculatingLevel = charObj.GetTraitLevel(DefaultTraits.Calculating);
+            int valorLevel = charObj.GetTraitLevel(DefaultTraits.Valor);
+
+            // If hero is honorable and is married
+            if (honorLevel > 0 && hero.Spouse != null) return false;
+
+            int chance = SubModule.Config.GetValueInt("percentChanceOfAIAttemptingConception");
+            if (SubModule.Config.GetValueBool("enableTraitAffectedRelationNeeded")) {
+                chance -= honorLevel * 15;
+                chance -= calculatingLevel * 10;
+                chance += valorLevel * 12;
+            }
+
+            return PercentChanceCheck(chance);
+        }
+
+        public static int GetRelationNeededForConceptionAcceptance(Hero hero, Hero otherHero) {
             int relationNeeded = SubModule.Config.GetValueInt("minimumRelationNeeded");
 
             if (SubModule.Config.GetValueBool("enableTraitAffectedRelationNeeded")) {
@@ -84,8 +103,8 @@ namespace BastardChildren.StaticUtils {
                     }
                 }
 
-                // is player king affect
-                if (IsHeroKing(Hero.MainHero)) {
+                // is hero a king
+                if (IsHeroKing(hero)) {
                     relationNeeded -= 50;
                 }
 
@@ -103,6 +122,17 @@ namespace BastardChildren.StaticUtils {
             }
 
             return relationNeeded;
+        }
+
+        public static bool PercentChanceCheck(int chanceOutOfHundred) {
+            if (chanceOutOfHundred >= 100)
+                return true;
+            if (chanceOutOfHundred <= 0)
+                return false;
+
+            if (SubModule.Random.Next(1, 101) <= chanceOutOfHundred)
+                return true;
+            return false;
         }
 
         private static Dictionary<string, string> bastardSurnamesList = new Dictionary<string, string>

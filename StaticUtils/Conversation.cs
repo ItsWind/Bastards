@@ -1,10 +1,6 @@
 ﻿using BastardChildren.Models;
 using BastardChildren.AddonHelpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.Core;
@@ -20,7 +16,10 @@ namespace BastardChildren.StaticUtils {
             Bastard? bastard = Utils.GetBastardFromHero(otherHero);
 
             // If other hero is not a bastard
-            if (bastard == null) { return false; }
+            if (bastard == null) return false;
+
+            if (!(Hero.MainHero.Clan.Kingdom.RulingClan == Hero.MainHero.Clan) && 
+                !(otherHero.Father == Hero.MainHero) && !(otherHero.Mother == Hero.MainHero)) return false;
 
             return true;
         }
@@ -91,7 +90,7 @@ namespace BastardChildren.StaticUtils {
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
             if (femaleHero != null && !femaleHero.IsPregnant && 
-                otherHero.GetRelationWithPlayer() >= Utils.GetRelationNeededForConceptionAcceptance(otherHero)) {
+                otherHero.GetRelationWithPlayer() >= Utils.GetRelationNeededForConceptionAcceptance(Hero.MainHero, otherHero)) {
                 returnVal = true;
             }
 
@@ -105,7 +104,7 @@ namespace BastardChildren.StaticUtils {
 
             if (femaleHero != null && !femaleHero.IsPregnant) {
                 // Conception chance
-                if (SubModule.Random.Next(1, 100) <= SubModule.Config.GetValueInt("percentChanceOfConception")) {
+                if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfConception"))) {
                     Hero father = femaleHero != Hero.MainHero ? Hero.MainHero : otherHero;
 
                     Bastard bastard = new Bastard(father, femaleHero);
@@ -128,16 +127,16 @@ namespace BastardChildren.StaticUtils {
             else {
                 heroesCrueltyReceived[otherHero] = CampaignTime.DaysFromNow(15.0f);
 
-                Utils.ModifyPlayerRelations(otherHero, -100);
+                Utils.ModifyHeroRelations(Hero.MainHero, otherHero, -100);
                 if (otherHero.Spouse != null)
-                    Utils.ModifyPlayerRelations(otherHero.Spouse, -75);
+                    Utils.ModifyHeroRelations(Hero.MainHero, otherHero.Spouse, -75);
                 if (otherHero.Father != null && otherHero.Father.IsAlive)
-                    Utils.ModifyPlayerRelations(otherHero.Father, -75);
+                    Utils.ModifyHeroRelations(Hero.MainHero, otherHero.Father, -75);
                 if (otherHero.Mother != null && otherHero.Mother.IsAlive)
-                    Utils.ModifyPlayerRelations(otherHero.Mother, -75);
+                    Utils.ModifyHeroRelations(Hero.MainHero, otherHero.Mother, -75);
                 if (!otherHero.Siblings.IsEmpty())
                     foreach (Hero hero in otherHero.Siblings)
-                        Utils.ModifyPlayerRelations(hero, -75);
+                        Utils.ModifyHeroRelations(Hero.MainHero, hero, -75);
 
                 Utils.ModifyPlayerTraitLevel(DefaultTraits.Mercy, -1);
                 Utils.ModifyPlayerTraitLevel(DefaultTraits.Honor, -1);

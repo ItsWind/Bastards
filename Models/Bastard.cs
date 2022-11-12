@@ -1,12 +1,7 @@
 ﻿using BastardChildren.StaticUtils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
-using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.SaveSystem;
@@ -72,14 +67,24 @@ namespace BastardChildren.Models
             SubModule.Bastards.Remove(this);
         }
 
-        private void SetBastardGuardian(Hero guardian, bool doConsequence=false) {
+        private void SetBastardGuardian(Hero guardian, Hero? consequenceHero=null) {
             if (hero == null) return;
 
             Clan guardianClan = guardian.Clan;
             if (guardianClan != null) {
                 hero.Clan = guardianClan;
-                if (doConsequence)
-                    DoConsequence(guardian);
+
+                // See if caught or if child is considered legit
+                if (guardian.Spouse != null) {
+                    // Secret only works because guardian is female, if the player is female sending a bastard the spouse obviously knows
+                    if (guardian.IsFemale && Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceKeptSecret"))) {
+                        Legitimize();
+                        return;
+                    }
+                }
+
+                if (consequenceHero != null)
+                    DoConsequence(guardian, consequenceHero);
             }
             else {
                 // Baby disappears, sold to orphanage or whatever
@@ -88,33 +93,16 @@ namespace BastardChildren.Models
             }
         }
 
-        private void DoConsequence(Hero guardian) {
-            if (hero == null) return;
+        private void DoConsequence(Hero guardian, Hero consequenceHero) {
+            if (guardian.Clan == Hero.MainHero.Clan) return;
 
             if (!SubModule.Config.GetValueBool("enableConsequences")) return;
 
-            Hero guardianSpouse = guardian.Spouse;
+            Utils.ModifyHeroRelations(consequenceHero, guardian.Spouse, SubModule.Config.GetValueInt("spouseRelationLoss"));
 
-            if (guardianSpouse != null) {
-                // Secret only works because guardian is female, if the player is female sending a bastard the spouse obviously knows
-                if (guardian.IsFemale &&
-                    SubModule.Random.Next(1, 100) <= SubModule.Config.GetValueInt("percentChanceKeptSecret")) {
-                    Legitimize();
-                    Utils.PrintToDisplayBox("Not Caught", hero.Name + " is thought to be legitimate!");
-                    return;
-                }
-                else {
-                    Utils.ModifyPlayerRelations(guardianSpouse, SubModule.Config.GetValueInt("spouseRelationLoss"));
-                    Utils.PrintToDisplayBox("Caught!", guardianSpouse.Name + " is not happy with your actions.");
-                }
-            }
+            if (guardian.Clan.Leader == guardian) return;
 
-            Hero guardianClanLeader = guardian.Clan.Leader;
-
-            if (guardianClanLeader == guardian) return;
-
-            Utils.ModifyPlayerRelations(guardianClanLeader, SubModule.Config.GetValueInt("clanLeaderRelationLoss"));
-            Utils.PrintToDisplayBox("Caught!", guardianClanLeader.Name + " is not happy with your actions.");
+            Utils.ModifyHeroRelations(consequenceHero, guardian.Clan.Leader, SubModule.Config.GetValueInt("clanLeaderRelationLoss"));
         }
 
         private void Birth() {
@@ -126,23 +114,14 @@ namespace BastardChildren.Models
             int stillbirthNum = 0;
 
             // Stillbirth chance
-            if (SubModule.Random.Next(1, 100) <= SubModule.Config.GetValueInt("percentChanceOfStillbirth")) {
+            if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfStillbirth"))) {
                 Utils.PrintToMessages(mother.Name + " has delivered stillborn.", 255, 100, 100);
                 SubModule.Bastards.Remove(this);
                 stillbirthNum++;
             } else {
                 // Birth hero
-                try {
-                    hero = HeroCreator.DeliverOffSpring(mother, father, SubModule.Random.Next(0, 2) >= 1 ? true : false);
-                    aliveChildren.Add(hero);
-                }
-                catch (Exception thisDamnBug) {
-                    Utils.PrintToDisplayBox("BASTARD CHILDREN ERROR", mother.Name + " HAS DELIVERED DEBUG STILLBIRTH. PLEASE SEND A SCREENSHOT OF THIS TO WINDWHISTLE ON THE NEXUS PAGE. " +
-                        "FEMALE: " + Hero.MainHero.IsFemale.ToString() + ", FEMALE CULTURE: " + mother.Culture.ToString() + ", " +
-                        "MALE CULTURE: " + father.Culture.ToString() + ", *!* EXCEPTION *!*: " + thisDamnBug.Message);
-                    SubModule.Bastards.Remove(this);
-                    stillbirthNum++;
-                }
+                hero = HeroCreator.DeliverOffSpring(mother, father, SubModule.Random.Next(0, 2) >= 1 ? true : false);
+                aliveChildren.Add(hero);
             }
 
             // Dispatch campaign event
@@ -150,7 +129,7 @@ namespace BastardChildren.Models
 
 
             // Mother dying in labor chance
-            if (SubModule.Random.Next(1, 100) <= SubModule.Config.GetValueInt("percentChanceOfLaborDeath")) {
+            if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfLaborDeath"))) {
                 KillCharacterAction.ApplyInLabor(mother);
             }
 
@@ -159,9 +138,6 @@ namespace BastardChildren.Models
 
             // Set bastard as lord occupation
             hero.SetNewOccupation(Occupation.Lord);
-
-            // Bastard clan to send off to
-            Hero bastardGuardian = mother;
 
             // Check if bastard is players child
             if (Hero.MainHero == father || Hero.MainHero == mother) {
@@ -182,19 +158,17 @@ namespace BastardChildren.Models
                 InformationManager.ShowInquiry(new InquiryData(new TextObject("{=*}Bastard Born", null).ToString(), textObject.ToString(), true, true, "Yes", "No",
                     // Yes, take them into my clan
                     () => {
-                        bastardGuardian = Hero.MainHero;
-                        SetBastardGuardian(bastardGuardian);
+                        SetBastardGuardian(Hero.MainHero);
                     },
                     // No, I will not take them into my clan
                     () => {
-                        bastardGuardian = otherHero;
-                        SetBastardGuardian(bastardGuardian, true);
+                        SetBastardGuardian(otherHero, Hero.MainHero);
                     },
                 ""), true);
             }
             // If the bastard is not the current player character's child
             else {
-                SetBastardGuardian(bastardGuardian);
+                SetBastardGuardian(mother, father);
             }
 
             // Set GoT surnames

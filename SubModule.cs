@@ -3,7 +3,6 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.Encounters;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -29,6 +28,7 @@ namespace BastardChildren
                 CampaignGameStarter campaignStarter = (CampaignGameStarter)gameStarter;
 
                 campaignStarter.AddBehavior(new BastardCampaignBehavior(campaignStarter));
+                campaignStarter.AddBehavior(new AIBastardConceptionCampaignBehavior());
             }
         }
     }

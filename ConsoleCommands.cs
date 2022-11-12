@@ -1,7 +1,6 @@
 ﻿using BastardChildren.Models;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Library;
 
 namespace BastardChildren
