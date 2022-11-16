@@ -18,8 +18,7 @@ namespace BastardChildren.StaticUtils {
             // If other hero is not a bastard
             if (bastard == null) return false;
 
-            if (!(Hero.MainHero.Clan.Kingdom.RulingClan == Hero.MainHero.Clan) && 
-                !(otherHero.Father == Hero.MainHero) && !(otherHero.Mother == Hero.MainHero)) return false;
+            if (!(otherHero.Father == Hero.MainHero) && !(otherHero.Mother == Hero.MainHero)) return false;
 
             return true;
         }
