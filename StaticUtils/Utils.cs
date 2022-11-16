@@ -78,6 +78,9 @@ namespace BastardChildren.StaticUtils {
             if (honorLevel > 0 && hero.Spouse != null) return false;
 
             int chance = SubModule.Config.GetValueInt("percentChanceOfAIAttemptingConception");
+
+            if (hero.Spouse != null) chance /= 2;
+
             if (SubModule.Config.GetValueBool("enableTraitAffectedRelationNeeded")) {
                 chance -= honorLevel * 15;
                 chance -= calculatingLevel * 10;

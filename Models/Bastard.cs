@@ -105,7 +105,7 @@ namespace BastardChildren.Models
             Utils.ModifyHeroRelations(consequenceHero, guardian.Clan.Leader, SubModule.Config.GetValueInt("clanLeaderRelationLoss"));
         }
 
-        private void Birth() {
+        public void Birth() {
             // Set mother to not pregnant
             mother.IsPregnant = false;
 

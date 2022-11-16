@@ -17,19 +17,26 @@ namespace BastardChildren
 aiAllowedToHaveBastards=1
 > Set to 0 to disable AI having bastards of their own. 1 by default
 
-percentChanceOfAIAttemptingConception=30
-> Set the base chance of AI considering conception. Set higher for a better chance or lower for more rarity. 30 by default
+percentChanceOfAIAttemptingConception=10
+> Set the base chance of AI considering conception. Set higher for a better chance or lower for more rarity. 10 by default
 This is also affected by enableTraitAffectedRelationNeeded below.
+The math for this is as follows;
+- Start with this base number
+- Divide by 2 if they are married
+If trait affected relation is turned on (it is by default);
+- Subtract 15 multiplied by honor level
+- Subtract 10 multiplied by calculating level
+- Add 12 multiplied by valor level
 
 
 -- BIRTH CONFIG --
 
 
 minDaysUntilBirth=57.0
-> Set the minimum days after conception until birth. Default is 57.
+> Set the minimum days after conception until birth. 57 by default
 
 maxDaysUntilBirth=68.0
-> Set the maximum days after conception until birth. Default is 68.
+> Set the maximum days after conception until birth. 68 by default
 
 percentChanceOfConception=25
 > Percent chance of conceiving a bastard. 25 by default
@@ -45,50 +52,50 @@ percentChanceOfStillbirth=15
 
 
 enableIncest=0
-> Set enableIncest to 1 to enable... well... incest. 0 by default.
+> Set enableIncest to 1 to enable... well... incest. 0 by default
 
 minimumRelationNeeded=10
-> The minimum relation needed to engage in bastard conversations. 10 by default.
+> The minimum relation needed to engage in bastard conversations. 10 by default
 
 enableTraitAffectedRelationNeeded=1
 > Set enableTraitAffectedRelationNeeded to 0 to disable traits affecting how much relation is needed. 1 by default
 For example, with this enabled; honor level * 15 will be applied to the relation needed. Honorable heroes will need more relation and devious less.
 
-askedTimerInDays=3.0
-> After asking a hero for bastard conception, this is how long after you must wait to ask again. Default is 3 days
+askedTimerInDays=1.0
+> After asking a hero for bastard conception, this is how long after you must wait to ask again. 1 by default
 
 
 -- LEGITIMIZATION CONFIG --
 
 
 legitimizationInfluenceCost=150.0
-> Set influence cost for legitimizing bastard. This is DOUBLE when NOT a RULER. 150 by default.
+> Set influence cost for legitimizing bastard. This is DOUBLE when NOT a RULER. 150 by default
 
 bastardsClanHeirLegitimization=1
-> Set to 0 to disable bastards becoming legitimized upon ascending to lead a clan. 1 by default.
+> Set to 0 to disable bastards becoming legitimized upon ascending to lead a clan. 1 by default
 
 bastardsMarriageValueMult=0.75
 > Set the multiplier for marriage with bastards. It's hard to explain, just mess with it if you want.
 
 bastardsMarriageLegitimization=1
-> Set to 0 to disable bastards becoming legit upon a marriage. 1 by default.
+> Set to 0 to disable bastards becoming legit upon a marriage. 1 by default
 
 
 -- CONSEQUENCES CONFIG --
 
 
 enableConsequences=1
-> Set to 0 to disable consequences for sending a bastard to live with another family. 1 by default.
+> Set to 0 to disable consequences for sending a bastard to live with another family. 1 by default
 
-percentChanceKeptSecret=50
-> Set the percent chance that the bastard's parentage is kept secret when sent to the other clan. 50 by default.
+percentChanceKeptSecret=90
+> Set the percent chance that the bastard's parentage is kept secret when sent to the other clan. 90 by default
 Secret only works if the other hero is female, if the player is female sending a bastard the female spouse obviously knows it's not hers
 
 spouseRelationLoss=-60
-> Set the relation loss suffered with the other hero's spouse if they have one. -60 by default.
+> Set the relation loss suffered with the other hero's spouse if they have one. -60 by default
 
 clanLeaderRelationLoss=-40
-> Set the relation loss suffered with the clan leader of the other hero if it's not them. -40 by default.
+> Set the relation loss suffered with the clan leader of the other hero if it's not them. -40 by default
 
 
 -- MISC CONFIG --

@@ -1,4 +1,5 @@
-﻿using BastardChildren.Models;
+﻿using BastardChildren.StaticUtils;
+using BastardChildren.Models;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Library;
@@ -12,6 +13,39 @@ namespace BastardChildren
         {
             SubModule.Config.LoadConfig();
             return "Config reloaded!";
+        }
+
+        [CommandLineFunctionality.CommandLineArgumentFunction("debug_force_birth", "bastardchildren")]
+        private static string DebugForceBirth(List<string> args) {
+            if (args.Count <= 0) return "Mother not specified. Use bastardchildren.debug_force_birth MotherNameHere";
+
+            foreach (Bastard bastard in SubModule.Bastards) {
+                if (bastard.hero != null) continue;
+                string motherNameNoSpaces = bastard.mother.ToString().Replace(" ", "");
+                if (args[0] == motherNameNoSpaces) {
+                    bastard.Birth();
+                    return "Successful birth.";
+                }
+            }
+
+            return "No pregnancy with mother name '" + args[0] + "' can be found in Bastard Children data.";
+        }
+
+        [CommandLineFunctionality.CommandLineArgumentFunction("debug_print_bastards", "bastardchildren")]
+        private static string DebugPrintBastards(List<string> args) {
+            foreach (Bastard bastard in SubModule.Bastards) {
+                Utils.PrintToMessages("READING BASTARD", 255, 0, 0);
+                Utils.PrintToMessages("Father: " + bastard.father.ToString());
+                Utils.PrintToMessages("Mother: " + bastard.mother.ToString());
+                if (bastard.hero != null) {
+                    Utils.PrintToMessages("Bastard: " + bastard.hero.ToString());
+                    Utils.PrintToMessages("Bastard clan: " + bastard.hero.Clan.ToString());
+                } else {
+                    Utils.PrintToMessages("Still cooking.");
+                    Utils.PrintToMessages("Ding time: " + CampaignTime.Milliseconds((long)bastard.birthTimeInMilliseconds).ToString());
+                }
+            }
+            return "Bastards printed in information text window!";
         }
 
         [CommandLineFunctionality.CommandLineArgumentFunction("debug_make_main_hero_ill", "bastardchildren")]
