@@ -133,8 +133,14 @@ namespace BastardChildren.Models
                 KillCharacterAction.ApplyInLabor(mother);
             }
 
-            // End function if birthed after marriage between mother and father OR if stillborn
-            if (mother.Spouse == father || hero == null) return;
+            // If born when mother and father are married
+            if (mother.Spouse == father) {
+                Legitimize();
+                return;
+            }
+
+            // If bastard was stillborn
+            if (hero == null) return;
 
             // Set bastard as lord occupation
             hero.SetNewOccupation(Occupation.Lord);
