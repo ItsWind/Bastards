@@ -17,7 +17,6 @@ namespace BastardChildren {
 
             AddBaseModDialogs();
             AddBecomeBastardDialogs();
-            AddCrueltyDialogs();
             AddLegitimizeBastardDialogs();
         }
 
@@ -78,34 +77,6 @@ namespace BastardChildren {
             game.AddDialogLine("BastardsEventConfirmationReceived", "BastardsEventMakeBastard", "lord_pretalk",
                 "Yes.. I think I would like that very much.[rf:positive, rb:positive]",
                 null, () => Conversation.ConceiveBastard(), 100, null);
-        }
-
-        private void AddCrueltyDialogs() {
-            game.AddPlayerLine("BastardsCrueltyEventStart", "hero_main_options", "BastardsCrueltyEventStartOutput",
-                "Remove your clothing.",
-                () => {
-                    return SubModule.Config.GetValueBool("enableCruelty") &&
-                    Hero.OneToOneConversationHero.IsPrisoner &&
-                    Hero.OneToOneConversationHero.PartyBelongedToAsPrisoner.LeaderHero == Hero.MainHero;
-                }, null, 100, null, null);
-
-            game.AddDialogLine("BastardsCreultyEventConfirmation", "BastardsCrueltyEventStartOutput", "BastardsCruelyEventConfirm",
-                "Not again..please.[rf:unsure]",
-                () => Conversation.CrueltyReceivedCooldown(), null, 100, null);
-            game.AddDialogLine("BastardsCreultyEventConfirmationTraumatized", "BastardsCrueltyEventStartOutput", "BastardsCruelyEventConfirm",
-                "I'm sorry..? No! I won't submit to that![rf:unsure, rb:very_negative]",
-                null, null, 90, null);
-
-            game.AddPlayerLine("BastardsCrueltyEventConfirmationYes", "BastardsCruelyEventConfirm", "BastardsCrueltyEventMakeBastard",
-                "I don't think you understand; I wasn't asking. Guards, hold them down.",
-                null, null, 100, null);
-            game.AddPlayerLine("BastardsCrueltyEventConfirmationNo", "BastardsCruelyEventConfirm", "lord_pretalk",
-                "Fine. Next time I may not be so generous.",
-                null, null, 90, null);
-
-            game.AddDialogLine("BastardsCrueltyEventConfirmationReceived", "BastardsCrueltyEventMakeBastard", "close_window",
-                "NO! GET AWAY![rf:very_negative, rb:very_negative]",
-                null, () => Conversation.ConceiveBastard(true), 100, null);
         }
 
         private void AddBecomeBastardDialogs() {

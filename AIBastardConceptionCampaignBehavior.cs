@@ -30,12 +30,6 @@ namespace BastardChildren {
 
             if (hero.Occupation != Occupation.Lord) return;
 
-            // if the hero is a prisoner
-            if (hero.IsPrisoner) {
-                HandleCrueltyDailyTickHero(hero);
-                return;
-            }
-
             // if the hero is in a settlement
             if (hero.CurrentSettlement != null) {
                 Settlement settlement = hero.CurrentSettlement;
@@ -94,12 +88,6 @@ namespace BastardChildren {
 
                 femaleHero.IsPregnant = true;
             }
-        }
-
-        private void HandleCrueltyDailyTickHero(Hero hero) {
-            if (!SubModule.Config.GetValueBool("enableCruelty")) return;
-
-
         }
     }
 }

@@ -9,7 +9,6 @@ using TaleWorlds.Localization;
 namespace BastardChildren.StaticUtils {
     public static class Conversation {
         private static Dictionary<Hero, CampaignTime> heroesAskedForConception = new();
-        private static Dictionary<Hero, CampaignTime> heroesCrueltyReceived = new();
 
         public static bool PlayerCanLegitimizeBastard() {
             Hero otherHero = Hero.OneToOneConversationHero;
@@ -57,18 +56,6 @@ namespace BastardChildren.StaticUtils {
             return false;
         }
 
-        public static bool CrueltyReceivedCooldown() {
-            Hero otherHero = Hero.OneToOneConversationHero;
-
-            if (heroesCrueltyReceived.ContainsKey(otherHero)) {
-                if (!heroesCrueltyReceived[otherHero].IsFuture)
-                    heroesCrueltyReceived.Remove(otherHero);
-                else
-                    return true;
-            }
-            return false;
-        }
-
         public static bool BastardConceptionAllowed() {
             Hero otherHero = Hero.OneToOneConversationHero;
 
@@ -97,7 +84,7 @@ namespace BastardChildren.StaticUtils {
             return returnVal;
         }
 
-        public static void ConceiveBastard(bool cruel=false) {
+        public static void ConceiveBastard() {
             Hero otherHero = Hero.OneToOneConversationHero;
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
@@ -114,38 +101,16 @@ namespace BastardChildren.StaticUtils {
                 }
             }
 
-            if (cruel == false) {
-                heroesAskedForConception[otherHero] = CampaignTime.DaysFromNow((float)SubModule.Config.GetValueDouble("askedTimerInDays"));
+            heroesAskedForConception[otherHero] = CampaignTime.DaysFromNow((float)SubModule.Config.GetValueDouble("askedTimerInDays"));
 
-                int charmMod = 200;
-                if (otherHero.Clan != null && otherHero.Clan.IsNoble) {
-                    charmMod += 500;
-                }
-                Hero.MainHero.AddSkillXp(DefaultSkills.Charm, charmMod);
+            int charmMod = 200;
+            if (otherHero.Clan != null && otherHero.Clan.IsNoble) {
+                charmMod += 500;
             }
-            else {
-                heroesCrueltyReceived[otherHero] = CampaignTime.DaysFromNow(15.0f);
-
-                Utils.ModifyHeroRelations(Hero.MainHero, otherHero, -100);
-                if (otherHero.Spouse != null)
-                    Utils.ModifyHeroRelations(Hero.MainHero, otherHero.Spouse, -75);
-                if (otherHero.Father != null && otherHero.Father.IsAlive)
-                    Utils.ModifyHeroRelations(Hero.MainHero, otherHero.Father, -75);
-                if (otherHero.Mother != null && otherHero.Mother.IsAlive)
-                    Utils.ModifyHeroRelations(Hero.MainHero, otherHero.Mother, -75);
-                if (!otherHero.Siblings.IsEmpty())
-                    foreach (Hero hero in otherHero.Siblings)
-                        Utils.ModifyHeroRelations(Hero.MainHero, hero, -75);
-
-                Utils.ModifyPlayerTraitLevel(DefaultTraits.Mercy, -1);
-                Utils.ModifyPlayerTraitLevel(DefaultTraits.Honor, -1);
-                Utils.ModifyPlayerTraitLevel(DefaultTraits.Generosity, -1);
-                Utils.ModifyPlayerTraitLevel(DefaultTraits.Calculating, -1);
-                Utils.ModifyPlayerTraitLevel(DefaultTraits.Valor, 1);
-            }
+            Hero.MainHero.AddSkillXp(DefaultSkills.Charm, charmMod);
 
             // Event fire
-            BastardCampaignEvents.Fire_OnBastardConceptionAttempt(otherHero, cruel);
+            BastardCampaignEvents.Fire_OnPlayerBastardConceptionAttempt(otherHero);
         }
 
         public static void BecomeBastardOfHero() {

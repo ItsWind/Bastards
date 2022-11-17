@@ -5,16 +5,16 @@ using TaleWorlds.CampaignSystem;
 namespace BastardChildren.AddonHelpers {
     public static class BastardCampaignEvents {
         // BASTARD CONCEPTION EVENT
-        private static List<Action<Hero, bool>> _onBastardConceptionAttemptActions = new();
-        public static void Fire_OnBastardConceptionAttempt(Hero other, bool crueltyUsed) {
-            foreach (Action<Hero, bool> action in _onBastardConceptionAttemptActions)
-                action(other, crueltyUsed);
+        private static List<Action<Hero>> _onBastardConceptionAttemptActions = new();
+        public static void Fire_OnPlayerBastardConceptionAttempt(Hero other) {
+            foreach (Action<Hero> action in _onBastardConceptionAttemptActions)
+                action(other);
         }
         /// <summary>
         /// Adds a method to be run when a bastard conception is attempted.
         /// </summary>
         /// <param name="action">Action takes two parameters. Hero is for the other hero engaged in conception. bool is for if the act was cruel or not.</param>
-        public static void AddAction_OnBastardConceptionAttempt(Action<Hero, bool> action) {
+        public static void AddAction_OnPlayerBastardConceptionAttempt(Action<Hero> action) {
             _onBastardConceptionAttemptActions.Add(action);
         }
 

@@ -103,9 +103,6 @@ clanLeaderRelationLoss=-40
 
 enableSurnames=1
 > Set enableSurnames to 0 to disable automatic tacking on of Game of Thrones like surnames. 1 by default
-
-enableCruelty=0
-> Set enableCruelty to 1 to enable cruel choices. 0 by default. Keep this at 0 if you are triggered easily.
 ";
 
         public Config() {
