@@ -16,6 +16,15 @@ namespace BastardChildren.StaticUtils {
             InformationManager.ShowInquiry(new InquiryData(displayTitle, displayText, true, false, "Ok", null, null, null), true);
         }
 
+        public static bool HeroIsPregnant(Hero hero) {
+            if (hero.IsPregnant) return true;
+
+            foreach (Bastard bastard in SubModule.Bastards)
+                if (bastard.hero == null && bastard.mother == hero) return true;
+
+            return false;
+        }
+
         public static void ModifyHeroRelations(Hero hero1, Hero hero2, int mod) {
             if (hero1 == null || hero2 == null) return;
 

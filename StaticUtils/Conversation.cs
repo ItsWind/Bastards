@@ -76,7 +76,7 @@ namespace BastardChildren.StaticUtils {
 
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
-            if (femaleHero == null || femaleHero.IsPregnant) return false;
+            if (femaleHero == null || Utils.HeroIsPregnant(femaleHero)) return false;
 
             if (!SubModule.Config.GetValueBool("enableIncest") && Utils.HerosRelated(Hero.MainHero, otherHero)) return false;
 
@@ -88,7 +88,7 @@ namespace BastardChildren.StaticUtils {
             Hero otherHero = Hero.OneToOneConversationHero;
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
-            if (femaleHero != null && !femaleHero.IsPregnant && 
+            if (femaleHero != null && !Utils.HeroIsPregnant(femaleHero) && 
                 otherHero.GetRelationWithPlayer() >= Utils.GetRelationNeededForConceptionAcceptance(Hero.MainHero, otherHero)) {
                 returnVal = true;
             }
@@ -101,7 +101,7 @@ namespace BastardChildren.StaticUtils {
             Hero otherHero = Hero.OneToOneConversationHero;
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
-            if (femaleHero != null && !femaleHero.IsPregnant) {
+            if (femaleHero != null && !Utils.HeroIsPregnant(femaleHero)) {
                 // Conception chance
                 if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfConception"))) {
                     Hero father = femaleHero != Hero.MainHero ? Hero.MainHero : otherHero;

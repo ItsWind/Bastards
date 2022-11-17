@@ -61,7 +61,7 @@ namespace BastardChildren {
             Hero? femaleHero = Utils.GetFemaleHero(hero1, hero2);
 
             // If female hero not found (same gender) or female hero is pregnant
-            if (femaleHero == null || femaleHero.IsPregnant) return;
+            if (femaleHero == null || Utils.HeroIsPregnant(femaleHero)) return;
 
             // If the heroes share a clan
             if (hero1.Clan != null && hero2.Clan != null && hero1.Clan == hero2.Clan) return;
