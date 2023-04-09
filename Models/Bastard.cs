@@ -1,4 +1,6 @@
 ﻿using BastardChildren.StaticUtils;
+using HarmonyLib;
+using MCM.Abstractions.Base.Global;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
@@ -24,11 +26,14 @@ namespace BastardChildren.Models
             this.father = heroFather;
             this.mother = heroMother;
 
-            double minDays = SubModule.Config.GetValueDouble("minDaysUntilBirth");
-            double maxDays = SubModule.Config.GetValueDouble("maxDaysUntilBirth");
+            double minYears = GlobalSettings<MCMConfig>.Instance.MinimumYearsUntilBirth;
+            double maxYears = GlobalSettings<MCMConfig>.Instance.MaximumYearsUntilBirth;
 
-            float daysUntilBirth = (float)(minDays + (maxDays - minDays) * SubModule.Random.NextDouble());
-            this.birthTimeInMilliseconds = CampaignTime.DaysFromNow(daysUntilBirth).ToMilliseconds;
+            float yearsUntilBirth = (float)(minYears + (maxYears - minYears) * SubModule.Random.NextDouble());
+            birthTimeInMilliseconds = CampaignTime.YearsFromNow(yearsUntilBirth).ToMilliseconds;
+
+            SubModule.Bastards.Add(this);
+            heroMother.IsPregnant = true;
         }
 
         // Tick is done on hourly tick
@@ -77,7 +82,7 @@ namespace BastardChildren.Models
                 // See if caught or if child is considered legit
                 if (guardian.Spouse != null) {
                     // Secret only works because guardian is female, if the player is female sending a bastard the spouse obviously knows
-                    if (guardian.IsFemale && Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceKeptSecret"))) {
+                    if (guardian.IsFemale && Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.PercentChanceKeptSecret)) {
                         Legitimize();
                         return;
                     }
@@ -88,21 +93,37 @@ namespace BastardChildren.Models
             }
             else {
                 // Baby disappears, sold to orphanage or whatever
-                KillCharacterAction.ApplyByRemove(hero);
-                SubModule.Bastards.Remove(this);
+                Disappear();
             }
         }
 
         private void DoConsequence(Hero guardian, Hero consequenceHero) {
             if (guardian.Clan == Hero.MainHero.Clan) return;
 
-            if (!SubModule.Config.GetValueBool("enableConsequences")) return;
+            if (!GlobalSettings<MCMConfig>.Instance.ConsequencesEnabled) return;
 
-            Utils.ModifyHeroRelations(consequenceHero, guardian.Spouse, SubModule.Config.GetValueInt("spouseRelationLoss"));
+            Utils.ModifyHeroRelations(consequenceHero, guardian.Spouse, GlobalSettings<MCMConfig>.Instance.SpouseRelationLoss);
 
             if (guardian.Clan.Leader == guardian) return;
 
-            Utils.ModifyHeroRelations(consequenceHero, guardian.Clan.Leader, SubModule.Config.GetValueInt("clanLeaderRelationLoss"));
+            Utils.ModifyHeroRelations(consequenceHero, guardian.Clan.Leader, GlobalSettings<MCMConfig>.Instance.ClanLeaderRelationLoss);
+        }
+
+        public void Disappear() {
+            if (hero == null)
+                return;
+
+            hero.Clan = null;
+            hero.Father = null;
+            hero.Mother = null;
+
+            List<Hero> fatherChildren = (List<Hero>)AccessTools.Field(typeof(Hero), "_children").GetValue(father);
+            List<Hero> motherChildren = (List<Hero>)AccessTools.Field(typeof(Hero), "_children").GetValue(mother);
+            List<Hero> aliveHeroes = (List<Hero>)AccessTools.Field(typeof(CampaignObjectManager), "_aliveHeroes").GetValue(Campaign.Current.CampaignObjectManager);
+            aliveHeroes.Remove(hero);
+            fatherChildren.Remove(hero);
+            motherChildren.Remove(hero);
+            SubModule.Bastards.Remove(this);
         }
 
         public void Birth() {
@@ -114,7 +135,7 @@ namespace BastardChildren.Models
             int stillbirthNum = 0;
 
             // Stillbirth chance
-            if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfStillbirth"))) {
+            if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.StillbirthChance)) {
                 Utils.PrintToMessages(mother.Name + " has delivered stillborn.", 255, 100, 100);
                 SubModule.Bastards.Remove(this);
                 stillbirthNum++;
@@ -129,7 +150,7 @@ namespace BastardChildren.Models
 
 
             // Mother dying in labor chance
-            if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfLaborDeath"))) {
+            if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.LaborDeathChance)) {
                 KillCharacterAction.ApplyInLabor(mother);
             }
 
@@ -178,7 +199,7 @@ namespace BastardChildren.Models
             }
 
             // Set GoT surnames
-            if (SubModule.Config.GetValueBool("enableSurnames")) {
+            if (GlobalSettings<MCMConfig>.Instance.SurnamesEnabled) {
                 string[] names = Utils.GetBastardName(hero);
                 hero.SetName(new TextObject(names[1]), new TextObject(names[0]));
             }

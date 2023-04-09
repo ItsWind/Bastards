@@ -2,9 +2,9 @@
 using BastardChildren.AddonHelpers;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.Core;
 using TaleWorlds.Localization;
+using MCM.Abstractions.Base.Global;
 
 namespace BastardChildren.StaticUtils {
     public static class Conversation {
@@ -24,7 +24,7 @@ namespace BastardChildren.StaticUtils {
 
         public static void LegitimizeBastard() {
             Hero bastardHero = Hero.OneToOneConversationHero;
-            float infNeeded = (float)SubModule.Config.GetValueDouble("legitimizationInfluenceCost");
+            float infNeeded = GlobalSettings<MCMConfig>.Instance.LegitimizeInfluenceCost;
             if (!Utils.IsHeroKing(Hero.MainHero)) { infNeeded *= 2; }
 
             Hero.MainHero.Clan.Influence -= infNeeded;
@@ -36,7 +36,7 @@ namespace BastardChildren.StaticUtils {
         }
 
         public static bool HasInfluenceToLegitimize(out TextObject explain) {
-            float infNeeded = (float)SubModule.Config.GetValueDouble("legitimizationInfluenceCost");
+            float infNeeded = GlobalSettings<MCMConfig>.Instance.LegitimizeInfluenceCost;
             if (!Utils.IsHeroKing(Hero.MainHero)) { infNeeded *= 2; }
 
             explain = new TextObject("You need to have " + infNeeded + " influence.");
@@ -65,7 +65,7 @@ namespace BastardChildren.StaticUtils {
 
             if (femaleHero == null || Utils.HeroIsPregnant(femaleHero)) return false;
 
-            if (!SubModule.Config.GetValueBool("enableIncest") && Utils.HerosRelated(Hero.MainHero, otherHero)) return false;
+            if (!GlobalSettings<MCMConfig>.Instance.IncestEnabled && Utils.HerosRelated(Hero.MainHero, otherHero)) return false;
 
             return true;
         }
@@ -90,22 +90,20 @@ namespace BastardChildren.StaticUtils {
 
             if (femaleHero != null && !Utils.HeroIsPregnant(femaleHero)) {
                 // Conception chance
-                if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfConception"))) {
+                if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.ConceptionChance)) {
                     Hero father = femaleHero != Hero.MainHero ? Hero.MainHero : otherHero;
 
-                    Bastard bastard = new Bastard(father, femaleHero);
-                    SubModule.Bastards.Add(bastard);
+                    new Bastard(father, femaleHero);
 
-                    femaleHero.IsPregnant = true;
                     Utils.PrintToMessages(femaleHero.Name + " has gotten pregnant!", 255, 153, 204);
                 }
             }
 
-            heroesAskedForConception[otherHero] = CampaignTime.DaysFromNow((float)SubModule.Config.GetValueDouble("askedTimerInDays"));
+            heroesAskedForConception[otherHero] = CampaignTime.DaysFromNow(GlobalSettings<MCMConfig>.Instance.AskedTimerInDays);
 
-            int charmMod = 200;
+            int charmMod = 1000;
             if (otherHero.Clan != null && otherHero.Clan.IsNoble) {
-                charmMod += 500;
+                charmMod += 5000;
             }
             Hero.MainHero.AddSkillXp(DefaultSkills.Charm, charmMod);
 
@@ -124,7 +122,7 @@ namespace BastardChildren.StaticUtils {
                 Hero.MainHero.Father = h;
             }
 
-            if (SubModule.Config.GetValueBool("enableSurnames")) {
+            if (GlobalSettings<MCMConfig>.Instance.SurnamesEnabled) {
                 string[] moddedNames = Utils.GetBastardName(Hero.MainHero);
                 Hero.MainHero.SetName(new TextObject(moddedNames[1]), new TextObject(moddedNames[0]));
             }

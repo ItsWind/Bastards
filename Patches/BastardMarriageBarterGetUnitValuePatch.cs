@@ -1,6 +1,7 @@
 ﻿using BastardChildren.Models;
 using BastardChildren.StaticUtils;
 using HarmonyLib;
+using MCM.Abstractions.Base.Global;
 using System;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.BarterSystem.Barterables;
@@ -16,7 +17,7 @@ namespace BastardChildren.Patches {
             if (heroBeingProposedTo == null || proposingHero == null)
                 return;
 
-            int modifierValue = (int)Math.Round((double)Math.Abs(__result) * SubModule.Config.GetValueDouble("bastardsMarriageValueMult"));
+            int modifierValue = (int)Math.Round((double)Math.Abs(__result) * GlobalSettings<MCMConfig>.Instance.BastardMarriageValueMult);
 
             Bastard? bastardBeingProposedTo = Utils.GetBastardFromHero(heroBeingProposedTo);
             if (bastardBeingProposedTo != null)

@@ -1,4 +1,5 @@
 ﻿using BastardChildren.Models;
+using MCM.Abstractions.Base.Global;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
@@ -86,11 +87,11 @@ namespace BastardChildren.StaticUtils {
             // If hero is honorable and is married
             if (honorLevel > 0 && hero.Spouse != null) return false;
 
-            int chance = SubModule.Config.GetValueInt("percentChanceOfAIAttemptingConception");
+            int chance = GlobalSettings<MCMConfig>.Instance.AIBaseConceptionChance;
 
-            if (hero.Spouse != null) chance /= 2;
+            if (hero.Spouse != null) chance -= hero.GetRelation(hero.Spouse);
 
-            if (SubModule.Config.GetValueBool("enableTraitAffectedRelationNeeded")) {
+            if (GlobalSettings<MCMConfig>.Instance.TraitAffectedRelationEnabled) {
                 chance -= honorLevel * 15;
                 chance -= calculatingLevel * 10;
                 chance += valorLevel * 12;
@@ -100,9 +101,9 @@ namespace BastardChildren.StaticUtils {
         }
 
         public static int GetRelationNeededForConceptionAcceptance(Hero hero, Hero otherHero) {
-            int relationNeeded = SubModule.Config.GetValueInt("minimumRelationNeeded");
+            int relationNeeded = GlobalSettings<MCMConfig>.Instance.BaseRelationNeeded;
 
-            if (SubModule.Config.GetValueBool("enableTraitAffectedRelationNeeded")) {
+            if (GlobalSettings<MCMConfig>.Instance.TraitAffectedRelationEnabled) {
                 CharacterObject otherHeroBaseObj = otherHero.CharacterObject;
 
                 // other hero is noble

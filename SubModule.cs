@@ -4,14 +4,12 @@ using System;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
-using TaleWorlds.InputSystem;
 using TaleWorlds.MountAndBlade;
 
 namespace BastardChildren
 {
     public class SubModule : MBSubModuleBase
     {
-        public static Config Config = new();
         public static Random Random = new();
 
         public static List<Bastard> Bastards = new();

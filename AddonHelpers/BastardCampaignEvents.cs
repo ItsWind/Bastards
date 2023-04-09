@@ -6,7 +6,7 @@ namespace BastardChildren.AddonHelpers {
     public static class BastardCampaignEvents {
         // BASTARD CONCEPTION EVENT
         private static List<Action<Hero>> _onBastardConceptionAttemptActions = new();
-        public static void Fire_OnPlayerBastardConceptionAttempt(Hero other) {
+        internal static void Fire_OnPlayerBastardConceptionAttempt(Hero other) {
             foreach (Action<Hero> action in _onBastardConceptionAttemptActions)
                 action(other);
         }
@@ -20,7 +20,7 @@ namespace BastardChildren.AddonHelpers {
 
         // PLAYER BECOMES BASTARD EVENT
         private static List<Action<Hero>> _onPlayerBecomeBastardActions = new();
-        public static void Fire_OnPlayerBecomeBastard(Hero newParent) {
+        internal static void Fire_OnPlayerBecomeBastard(Hero newParent) {
             foreach (Action<Hero> action in _onPlayerBecomeBastardActions)
                 action(newParent);
         }

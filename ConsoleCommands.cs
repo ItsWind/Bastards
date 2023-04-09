@@ -8,13 +8,6 @@ namespace BastardChildren
 {
     public class ConsoleCommands
     {
-        [CommandLineFunctionality.CommandLineArgumentFunction("reloadconfig", "bastardchildren")]
-        private static string CommandReloadConfig(List<string> args)
-        {
-            SubModule.Config.LoadConfig();
-            return "Config reloaded!";
-        }
-
         [CommandLineFunctionality.CommandLineArgumentFunction("debug_force_birth", "bastardchildren")]
         private static string DebugForceBirth(List<string> args) {
             if (args.Count <= 0) return "Mother not specified. Use bastardchildren.debug_force_birth MotherNameHere";

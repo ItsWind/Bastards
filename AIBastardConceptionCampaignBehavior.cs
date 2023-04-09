@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using BastardChildren.StaticUtils;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.CampaignSystem.Party;
 using BastardChildren.Models;
+using MCM.Abstractions.Base.Global;
 
 namespace BastardChildren {
     public class AIBastardConceptionCampaignBehavior : CampaignBehaviorBase {
@@ -22,7 +20,7 @@ namespace BastardChildren {
         }
 
         private void ConceptBastardDailyTickHero(Hero hero) {
-            if (!SubModule.Config.GetValueBool("aiAllowedToHaveBastards")) return;
+            if (!GlobalSettings<MCMConfig>.Instance.AIBastardsEnabled) return;
 
             if (hero == Hero.MainHero) return;
 
@@ -77,16 +75,13 @@ namespace BastardChildren {
             if (heroesAskedForConception.ContainsKey(hero2) && heroesAskedForConception[hero2].IsFuture) return;
 
             // attempt conception
-            heroesAskedForConception[hero2] = CampaignTime.DaysFromNow((float)SubModule.Config.GetValueDouble("askedTimerInDays"));
+            heroesAskedForConception[hero2] = CampaignTime.DaysFromNow(GlobalSettings<MCMConfig>.Instance.AskedTimerInDays);
 
-            if (Utils.PercentChanceCheck(SubModule.Config.GetValueInt("percentChanceOfConception"))) {
+            if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.ConceptionChance)) {
                 //Utils.PrintToMessages(hero1.ToString() + " : " + hero2.ToString() + " : CONCEPTION ACHIEVED");
                 Hero maleHero = femaleHero == hero1 ? hero2 : hero1;
 
-                Bastard bastard = new Bastard(maleHero, femaleHero);
-                SubModule.Bastards.Add(bastard);
-
-                femaleHero.IsPregnant = true;
+                new Bastard(maleHero, femaleHero);
             }
         }
     }

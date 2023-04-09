@@ -1,6 +1,7 @@
 ﻿using BastardChildren.Models;
 using BastardChildren.StaticUtils;
 using HarmonyLib;
+using MCM.Abstractions.Base.Global;
 using TaleWorlds.CampaignSystem;
 
 namespace BastardChildren.Patches {
@@ -8,7 +9,7 @@ namespace BastardChildren.Patches {
     internal class BastardClanHeirLegitimizationPatch {
         [HarmonyPostfix]
         private static void Postfix(Hero leader) {
-            if (!SubModule.Config.GetValueBool("bastardsClanHeirLegitimization")) return;
+            if (!GlobalSettings<MCMConfig>.Instance.LegitimizeBastardHeirsEnabled) return;
 
             if (leader == null) return;
 
