@@ -26,7 +26,7 @@ namespace BastardChildren.StaticUtils {
             return false;
         }
 
-        public static void ModifyHeroRelations(Hero hero1, Hero hero2, int mod) {
+        public static void ModifyHeroRelations(Hero? hero1, Hero? hero2, int mod) {
             if (hero1 == null || hero2 == null) return;
 
             if (hero1 == hero2) return;

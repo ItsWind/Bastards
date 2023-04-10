@@ -6,6 +6,7 @@ using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.CampaignSystem.Party;
 using BastardChildren.Models;
 using MCM.Abstractions.Base.Global;
+using BastardChildren.AddonHelpers;
 
 namespace BastardChildren {
     public class AIBastardConceptionCampaignBehavior : CampaignBehaviorBase {
@@ -77,10 +78,11 @@ namespace BastardChildren {
             // attempt conception
             heroesAskedForConception[hero2] = CampaignTime.DaysFromNow(GlobalSettings<MCMConfig>.Instance.AskedTimerInDays);
 
-            if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.ConceptionChance)) {
-                //Utils.PrintToMessages(hero1.ToString() + " : " + hero2.ToString() + " : CONCEPTION ACHIEVED");
-                Hero maleHero = femaleHero == hero1 ? hero2 : hero1;
+            Hero maleHero = femaleHero == hero1 ? hero2 : hero1;
 
+            BastardCampaignEvents.Fire_OnAIBastardConceptionAttempt(maleHero, femaleHero);
+
+            if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.ConceptionChance)) {
                 new Bastard(maleHero, femaleHero);
             }
         }

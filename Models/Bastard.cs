@@ -48,9 +48,6 @@ namespace BastardChildren.Models
                     return;
                 }
 
-                // Keep making the mother pregnant, resets on some kind of tick event
-                mother.IsPregnant = true;
-
                 // If it's time to pop
                 if (CampaignTime.Now.ToMilliseconds >= birthTimeInMilliseconds)
                     Birth();
@@ -61,7 +58,7 @@ namespace BastardChildren.Models
             if (hero == null) return;
 
             // Set name without surname
-            string moddedName = hero.FirstName.ToString();
+            string moddedName = hero.Name.ToString();
             if (moddedName.Contains(" ")) {
                 int indexOfSpace = moddedName.IndexOf(" ");
                 moddedName = moddedName.Substring(0, indexOfSpace);
@@ -72,7 +69,16 @@ namespace BastardChildren.Models
             SubModule.Bastards.Remove(this);
         }
 
-        private void SetBastardGuardian(Hero guardian, Hero? consequenceHero=null) {
+        private void KeptSecret(Hero guardian) {
+            if (hero == null) return;
+
+            List<Hero> fatherChildren = (List<Hero>)AccessTools.Field(typeof(Hero), "_children").GetValue(hero.Father);
+            fatherChildren.Remove(hero);
+            hero.Father = guardian.Spouse;
+            Legitimize();
+        }
+
+        private void SetBastardGuardian(Hero guardian, Hero? guardianSpouse = null, Hero? consequenceHero = null) {
             if (hero == null) return;
 
             Clan guardianClan = guardian.Clan;
@@ -80,16 +86,16 @@ namespace BastardChildren.Models
                 hero.Clan = guardianClan;
 
                 // See if caught or if child is considered legit
-                if (guardian.Spouse != null) {
+                if (guardianSpouse != null) {
                     // Secret only works because guardian is female, if the player is female sending a bastard the spouse obviously knows
                     if (guardian.IsFemale && Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.PercentChanceKeptSecret)) {
-                        Legitimize();
+                        KeptSecret(guardian);
                         return;
                     }
                 }
 
                 if (consequenceHero != null)
-                    DoConsequence(guardian, consequenceHero);
+                    DoConsequence(guardian, guardianSpouse, consequenceHero);
             }
             else {
                 // Baby disappears, sold to orphanage or whatever
@@ -97,12 +103,12 @@ namespace BastardChildren.Models
             }
         }
 
-        private void DoConsequence(Hero guardian, Hero consequenceHero) {
+        private void DoConsequence(Hero guardian, Hero? guardianSpouse, Hero consequenceHero) {
             if (guardian.Clan == Hero.MainHero.Clan) return;
 
             if (!GlobalSettings<MCMConfig>.Instance.ConsequencesEnabled) return;
 
-            Utils.ModifyHeroRelations(consequenceHero, guardian.Spouse, GlobalSettings<MCMConfig>.Instance.SpouseRelationLoss);
+            Utils.ModifyHeroRelations(consequenceHero, guardianSpouse, GlobalSettings<MCMConfig>.Instance.SpouseRelationLoss);
 
             if (guardian.Clan.Leader == guardian) return;
 
@@ -148,14 +154,15 @@ namespace BastardChildren.Models
             // Dispatch campaign event
             CampaignEventDispatcher.Instance.OnGivenBirth(mother, aliveChildren, stillbirthNum);
 
-
+            // Grab spouse of mother hero for consequences as it sets to null on death/labor death
+            Hero? spouseOfMother = mother.Spouse;
             // Mother dying in labor chance
             if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.LaborDeathChance)) {
                 KillCharacterAction.ApplyInLabor(mother);
             }
 
             // If born when mother and father are married
-            if (mother.Spouse == father) {
+            if (spouseOfMother == father) {
                 Legitimize();
                 return;
             }
@@ -166,10 +173,17 @@ namespace BastardChildren.Models
             // Set bastard as lord occupation
             hero.SetNewOccupation(Occupation.Lord);
 
+            // Set GoT surnames
+            if (GlobalSettings<MCMConfig>.Instance.SurnamesEnabled) {
+                string[] names = Utils.GetBastardName(hero);
+                hero.SetName(new TextObject(names[1]), new TextObject(names[0]));
+            }
+
             // Check if bastard is players child
             if (Hero.MainHero == father || Hero.MainHero == mother) {
                 // Get other hero
                 Hero otherHero = Hero.MainHero == father ? mother : father;
+                Hero otherHeroSpouse = otherHero == mother ? spouseOfMother : otherHero.Spouse;
 
                 // Get clan inquiry text
                 TextObject textObject;
@@ -179,7 +193,7 @@ namespace BastardChildren.Models
                     textObject = new TextObject("{=*}{BASTARDMOTHERNAME} has given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
                     textObject.SetTextVariable("BASTARDMOTHERNAME", mother.Name);
                 }
-                textObject.SetTextVariable("BASTARDNAME", hero.Name);
+                textObject.SetTextVariable("BASTARDNAME", hero.FirstName);
 
                 // Perform clan inquiry
                 InformationManager.ShowInquiry(new InquiryData(new TextObject("{=*}Bastard Born", null).ToString(), textObject.ToString(), true, true, "Yes", "No",
@@ -189,19 +203,13 @@ namespace BastardChildren.Models
                     },
                     // No, I will not take them into my clan
                     () => {
-                        SetBastardGuardian(otherHero, Hero.MainHero);
+                        SetBastardGuardian(otherHero, otherHeroSpouse, Hero.MainHero);
                     },
                 ""), true);
             }
             // If the bastard is not the current player character's child
             else {
-                SetBastardGuardian(mother, father);
-            }
-
-            // Set GoT surnames
-            if (GlobalSettings<MCMConfig>.Instance.SurnamesEnabled) {
-                string[] names = Utils.GetBastardName(hero);
-                hero.SetName(new TextObject(names[1]), new TextObject(names[0]));
+                SetBastardGuardian(mother, spouseOfMother, father);
             }
         }
     }

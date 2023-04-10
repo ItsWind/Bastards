@@ -8,7 +8,7 @@ using TaleWorlds.CampaignSystem.BarterSystem.Barterables;
 
 namespace BastardChildren.Patches {
     [HarmonyPatch(typeof(MarriageBarterable), nameof(MarriageBarterable.GetUnitValueForFaction))]
-    internal class BastardMarriageBarterGetUnitValuePatch {
+    internal class MarriageBarterPatch {
         [HarmonyPostfix]
         private static void Postfix(ref int __result, MarriageBarterable __instance) {
             Hero? heroBeingProposedTo = Traverse.Create(__instance).Field("HeroBeingProposedTo").GetValue() as Hero;

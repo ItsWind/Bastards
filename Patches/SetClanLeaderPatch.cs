@@ -6,7 +6,7 @@ using TaleWorlds.CampaignSystem;
 
 namespace BastardChildren.Patches {
     [HarmonyPatch(typeof(Clan), nameof(Clan.SetLeader))]
-    internal class BastardClanHeirLegitimizationPatch {
+    internal class SetClanLeaderPatch {
         [HarmonyPostfix]
         private static void Postfix(Hero leader) {
             if (!GlobalSettings<MCMConfig>.Instance.LegitimizeBastardHeirsEnabled) return;

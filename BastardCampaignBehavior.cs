@@ -21,16 +21,26 @@ namespace BastardChildren {
         }
 
         public override void RegisterEvents() {
-            CampaignEvents.HourlyTickEvent.AddNonSerializedListener(this, new Action( () => {
-                foreach (Bastard bastard in SubModule.Bastards.ToList())
-                    bastard.Tick();
-            } ));
-
             CampaignEvents.BeforeHeroKilledEvent.AddNonSerializedListener(this, new Action<Hero, Hero, KillCharacterAction.KillCharacterActionDetail, bool>( (hero1, hero2, killActionDetail, someBool) => {
                 if (hero1 != null) {
+                    // If hero killed is a bastard
                     Bastard? bastard = Utils.GetBastardFromHero(hero1);
                     if (bastard != null)
                         SubModule.Bastards.Remove(bastard);
+                    
+                    // If hero killed is pregnant with a bastard
+                    if (hero1.IsPregnant) {
+                        Bastard? possibleBastardInBelly = null;
+
+                        try {
+                            possibleBastardInBelly = SubModule.Bastards.Where(x => x.hero == null && x.mother == hero1).First();
+                        } catch (Exception) { }
+
+                        if (possibleBastardInBelly != null) {
+                            hero1.IsPregnant = false;
+                            SubModule.Bastards.Remove(possibleBastardInBelly);
+                        }
+                    }
                 }
             } ));
         }
