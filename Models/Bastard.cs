@@ -36,7 +36,7 @@ namespace BastardChildren.Models
             heroMother.IsPregnant = true;
         }
 
-        // Tick is done on hourly tick
+        // Tick is done on daily hero tick, thrown in a Harmony patch on checking heroes for native pregnancy
         public void Tick()
         {
             // If bastard is unborn
@@ -183,29 +183,32 @@ namespace BastardChildren.Models
             if (Hero.MainHero == father || Hero.MainHero == mother) {
                 // Get other hero
                 Hero otherHero = Hero.MainHero == father ? mother : father;
-                Hero otherHeroSpouse = otherHero == mother ? spouseOfMother : otherHero.Spouse;
 
-                // Get clan inquiry text
-                TextObject textObject;
-                if (Hero.MainHero == mother)
-                    textObject = new TextObject("{=*}You have given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
-                else {
-                    textObject = new TextObject("{=*}{BASTARDMOTHERNAME} has given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
-                    textObject.SetTextVariable("BASTARDMOTHERNAME", mother.Name);
+                if (otherHero.Clan != Hero.MainHero.Clan) {
+                    Hero otherHeroSpouse = otherHero == mother ? spouseOfMother : otherHero.Spouse;
+
+                    // Get clan inquiry text
+                    TextObject textObject;
+                    if (Hero.MainHero == mother)
+                        textObject = new TextObject("{=*}You have given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
+                    else {
+                        textObject = new TextObject("{=*}{BASTARDMOTHERNAME} has given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
+                        textObject.SetTextVariable("BASTARDMOTHERNAME", mother.Name);
+                    }
+                    textObject.SetTextVariable("BASTARDNAME", hero.FirstName);
+
+                    // Perform clan inquiry
+                    InformationManager.ShowInquiry(new InquiryData(new TextObject("{=*}Bastard Born", null).ToString(), textObject.ToString(), true, true, "Yes", "No",
+                        // Yes, take them into my clan
+                        () => {
+                            SetBastardGuardian(Hero.MainHero);
+                        },
+                        // No, I will not take them into my clan
+                        () => {
+                            SetBastardGuardian(otherHero, otherHeroSpouse, Hero.MainHero);
+                        },
+                    ""), true);
                 }
-                textObject.SetTextVariable("BASTARDNAME", hero.FirstName);
-
-                // Perform clan inquiry
-                InformationManager.ShowInquiry(new InquiryData(new TextObject("{=*}Bastard Born", null).ToString(), textObject.ToString(), true, true, "Yes", "No",
-                    // Yes, take them into my clan
-                    () => {
-                        SetBastardGuardian(Hero.MainHero);
-                    },
-                    // No, I will not take them into my clan
-                    () => {
-                        SetBastardGuardian(otherHero, otherHeroSpouse, Hero.MainHero);
-                    },
-                ""), true);
             }
             // If the bastard is not the current player character's child
             else {

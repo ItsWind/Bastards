@@ -1,5 +1,6 @@
 ﻿using BastardChildren.Models;
 using BastardChildren.StaticUtils;
+using MCM.Abstractions.Base.Global;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,9 +59,10 @@ namespace BastardChildren {
             // BASE MOD DIALOG
 
             // Bastard event engage
-            game.AddPlayerLine("BastardsEventStart", "hero_main_options", "BastardsEventStartOutput",
-                "I was thinking that you and I...",
-                () => Conversation.BastardConceptionAllowed(), null, 100, null, null);
+            if (!GlobalSettings<MCMConfig>.Instance.DisableConversationOption)
+                game.AddPlayerLine("BastardsEventStart", "hero_main_options", "BastardsEventStartOutput",
+                    "I was thinking that you and I...",
+                    () => Conversation.BastardConceptionAllowed(), null, 100, null, null);
 
             // WHEN other hero has already been asked
             game.AddDialogLine("BastardsEventStartQuestionedAlreadyAsked", "BastardsEventStartOutput", "lord_pretalk",
@@ -73,7 +75,7 @@ namespace BastardChildren {
             // WHEN NOT interested
             game.AddDialogLine("BastardsEventStartQuestionedNotInterested", "BastardsEventStartOutput", "lord_pretalk",
                 "...? I don't know what picture you're trying to paint here, but this conversation is boring me.[rf:very_negative_ag, rb:negative]",
-                null, null, 90, null);
+                null, () => ChangeRelationAction.ApplyPlayerRelation(Hero.OneToOneConversationHero, -2, false), 90, null);
 
             // mad game
             game.AddPlayerLine("BastardsEventConfirmationYes", "BastardsEventConfirmBastard", "BastardsEventMakeBastard",

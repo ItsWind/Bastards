@@ -11,3 +11,4 @@ C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472
 C:\Users\stric\source\repos\BastardChildren\BastardChildren\obj\x64\Debug\net472\BastardChildren.pdb
 C:\Users\stric\source\repos\BastardChildren\BastardChildren\bin\x64\Debug\net472\MCMv5.dll
 C:\Users\stric\source\repos\BastardChildren\BastardChildren\bin\x64\Debug\net472\MCMv5.pdb
+C:\Users\stric\source\repos\BastardChildren\BastardChildren\bin\x64\Debug\net472\Mono.Cecil.dll

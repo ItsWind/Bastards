@@ -19,7 +19,7 @@ namespace BastardChildren.Patches {
             Bastard bastard;
 
             try {
-                bastard = SubModule.Bastards.Where(x => x.hero == null && x.mother == hero).First();
+                bastard = SubModule.Bastards.First(x => x.hero == null && x.mother == hero);
             }
             catch (Exception) {
                 return true;
