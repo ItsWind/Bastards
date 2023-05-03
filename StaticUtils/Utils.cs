@@ -2,28 +2,24 @@
 using MCM.Abstractions.Base.Global;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.Library;
+using TaleWorlds.Localization;
 
 namespace BastardChildren.StaticUtils {
     public static class Utils {
-        public static void PrintToMessages(string str, float r=255, float g=255, float b=255)
+        public static string GetLocalizedString(string str, params (string, string)[] textVars) {
+            TextObject textObject = new TextObject(str);
+            foreach ((string, string) value in textVars)
+                textObject.SetTextVariable(value.Item1, value.Item2);
+            return textObject.ToString();
+        }
+        public static void PrintToMessages(string str, float r=255, float g=255, float b=255, params (string, string)[] textVars)
         {
             float[] newValues = { r / 255.0f, g / 255.0f, b / 255.0f };
             Color col = new(newValues[0], newValues[1], newValues[2]);
-            InformationManager.DisplayMessage(new InformationMessage(str, col));
-        }
-        public static void PrintToDisplayBox(string displayTitle, string displayText) {
-            InformationManager.ShowInquiry(new InquiryData(displayTitle, displayText, true, false, "Ok", null, null, null), true);
-        }
-
-        public static bool HeroIsPregnant(Hero hero) {
-            if (hero.IsPregnant) return true;
-
-            foreach (Bastard bastard in SubModule.Bastards)
-                if (bastard.hero == null && bastard.mother == hero) return true;
-
-            return false;
+            InformationManager.DisplayMessage(new InformationMessage(GetLocalizedString(str, textVars), col));
         }
 
         public static void ModifyHeroRelations(Hero? hero1, Hero? hero2, int mod) {
@@ -31,20 +27,7 @@ namespace BastardChildren.StaticUtils {
 
             if (hero1 == hero2) return;
 
-            int currRelation = CharacterRelationManager.GetHeroRelation(hero1, hero2);
-            CharacterRelationManager.SetHeroRelation(hero1, hero2, currRelation + mod);
-
-            if (hero1 == Hero.MainHero || hero2 == Hero.MainHero) {
-                Hero otherHero = hero1 == Hero.MainHero ? hero2 : hero1;
-                int r = 0;
-                int g = 0;
-                int b = 0;
-                if (mod > 0)
-                    g = 204;
-                else
-                    r = 204;
-                PrintToMessages("Your relation with " + otherHero.Name + " has changed by " + mod + ".", r, g, b);
-            }
+            ChangeRelationAction.ApplyRelationChangeBetweenHeroes(hero1, hero2, mod);
         }
 
         public static void ModifyPlayerTraitLevel(TraitObject trait, int mod) {
@@ -53,7 +36,7 @@ namespace BastardChildren.StaticUtils {
         }
 
         public static Bastard? GetBastardFromHero(Hero hero) {
-            foreach (Bastard bastard in SubModule.Bastards)
+            foreach (Bastard bastard in BastardCampaignBehavior.Instance.Bastards)
                 if (hero != null && hero == bastard.hero)
                     return bastard;
             return null;
@@ -150,12 +133,12 @@ namespace BastardChildren.StaticUtils {
 
         private static Dictionary<string, string> bastardSurnamesList = new Dictionary<string, string>
         {
-            { "Sturgia", "Snow" },
-            { "Empire", "Waters" },
-            { "Battania", "Rivers" },
-            { "Vlandia", "Hill" },
-            { "Khuzait", "Grass" },
-            { "Aserai", "Sand" }
+            { "Sturgia", "{=BastardSurnameSturgia}Snow" },
+            { "Empire", "{=BastardSurnameEmpire}Waters" },
+            { "Battania", "{=BastardSurnameBattania}Rivers" },
+            { "Vlandia", "{=BastardSurnameVlandia}Hill" },
+            { "Khuzait", "{=BastardSurnameKhuzait}Grass" },
+            { "Aserai", "{=BastardSurnameAserai}Sand" }
         };
         public static string[] GetBastardName(Hero h) {
             string[] returnVals = { "", "" };
@@ -169,9 +152,9 @@ namespace BastardChildren.StaticUtils {
 
             string surname;
             try {
-                surname = bastardSurnamesList[h.Culture.GetName().ToString()];
+                surname = GetLocalizedString(bastardSurnamesList[h.Culture.GetName().ToString()]);
             } catch (KeyNotFoundException) {
-                surname = "Waters";
+                surname = GetLocalizedString("{=BastardSurnameEmpire}Waters");
             }
 
             moddedName = moddedName + " " + surname;

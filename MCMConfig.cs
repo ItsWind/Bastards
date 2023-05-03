@@ -104,5 +104,9 @@ namespace BastardChildren {
         [SettingPropertyBool("Disable Conversation Option", Order = 2, HintText = "Disable the conversation option for making bastards. This can be useful if you're playing with Concubines and you only want to have bastards with your concubines.", RequireRestart = true)]
         [SettingPropertyGroup("Misc")]
         public bool DisableConversationOption { get; set; } = false;
+
+        [SettingPropertyBool("Disable Encyclopedia Changes", Order = 3, HintText = "Disable the bastard label from appearing on bastards in encyclopedia.", RequireRestart = false)]
+        [SettingPropertyGroup("Misc")]
+        public bool DisableEncyclopediaChanges { get; set; } = false;
     }
 }

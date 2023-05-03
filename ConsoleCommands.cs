@@ -12,7 +12,7 @@ namespace BastardChildren
         private static string DebugForceBirth(List<string> args) {
             if (args.Count <= 0) return "Mother not specified. Use bastardchildren.debug_force_birth MotherNameHere";
 
-            foreach (Bastard bastard in SubModule.Bastards) {
+            foreach (Bastard bastard in BastardCampaignBehavior.Instance.Bastards) {
                 if (bastard.hero != null) continue;
                 string motherNameNoSpaces = bastard.mother.ToString().Replace(" ", "");
                 if (args[0] == motherNameNoSpaces) {
@@ -26,7 +26,7 @@ namespace BastardChildren
 
         [CommandLineFunctionality.CommandLineArgumentFunction("debug_print_bastards", "bastardchildren")]
         private static string DebugPrintBastards(List<string> args) {
-            foreach (Bastard bastard in SubModule.Bastards) {
+            foreach (Bastard bastard in BastardCampaignBehavior.Instance.Bastards) {
                 Utils.PrintToMessages("READING BASTARD", 255, 0, 0);
                 Utils.PrintToMessages("Father: " + bastard.father.ToString());
                 Utils.PrintToMessages("Mother: " + bastard.mother.ToString());
@@ -50,7 +50,7 @@ namespace BastardChildren
         [CommandLineFunctionality.CommandLineArgumentFunction("debug_set_lord_occupation", "bastardchildren")]
         private static string DebugSetLord(List<string> args) {
             if (args.Count == 1) {
-                foreach (Bastard bastard in SubModule.Bastards) {
+                foreach (Bastard bastard in BastardCampaignBehavior.Instance.Bastards) {
                     Hero? bastardHero = bastard.hero;
                     if (bastardHero == null) continue;
 
@@ -68,7 +68,7 @@ namespace BastardChildren
         [CommandLineFunctionality.CommandLineArgumentFunction("debug_legitimize", "bastardchildren")]
         private static string DebugLegitimize(List<string> args) {
             if (args.Count == 1) {
-                foreach (Bastard bastard in SubModule.Bastards) {
+                foreach (Bastard bastard in BastardCampaignBehavior.Instance.Bastards) {
                     Hero? bastardHero = bastard.hero;
                     if (bastardHero == null) continue;
 
@@ -86,7 +86,7 @@ namespace BastardChildren
         [CommandLineFunctionality.CommandLineArgumentFunction("debug_come_of_age", "bastardchildren")]
         private static string DebugComeOfAge(List<string> args) {
             if (args.Count == 1) {
-                foreach (Bastard bastard in SubModule.Bastards) {
+                foreach (Bastard bastard in BastardCampaignBehavior.Instance.Bastards) {
                     Hero? bastardHero = bastard.hero;
                     if (bastardHero == null) continue;
 

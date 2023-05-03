@@ -14,8 +14,6 @@ namespace BastardChildren
     {
         public static Random Random = new();
 
-        public static List<Bastard> Bastards = new();
-
         protected override void OnSubModuleLoad() {
             new Harmony("BastardChildren").PatchAll();
 

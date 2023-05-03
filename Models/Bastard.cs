@@ -32,8 +32,12 @@ namespace BastardChildren.Models
             float yearsUntilBirth = (float)(minYears + (maxYears - minYears) * SubModule.Random.NextDouble());
             birthTimeInMilliseconds = CampaignTime.YearsFromNow(yearsUntilBirth).ToMilliseconds;
 
-            SubModule.Bastards.Add(this);
+            BastardCampaignBehavior.Instance.Bastards.Add(this);
             heroMother.IsPregnant = true;
+
+            if (Hero.MainHero == heroFather || Hero.MainHero == heroMother)
+                Utils.PrintToMessages("{=BastardPlayerConceptionSuccess}{HERO_MOTHER_NAME} has gotten pregnant!", 255, 153, 204,
+                    ("HERO_MOTHER_NAME", heroMother.Name.ToString()));
         }
 
         // Tick is done on daily hero tick, thrown in a Harmony patch on checking heroes for native pregnancy
@@ -44,7 +48,7 @@ namespace BastardChildren.Models
                 // Check if mother is dead
                 if (!mother.IsAlive) {
                     mother.IsPregnant = false;
-                    SubModule.Bastards.Remove(this);
+                    BastardCampaignBehavior.Instance.Bastards.Remove(this);
                     return;
                 }
 
@@ -66,7 +70,7 @@ namespace BastardChildren.Models
             hero.SetName(new TextObject(moddedName), new TextObject(moddedName));
 
             // Remove from bastards list
-            SubModule.Bastards.Remove(this);
+            BastardCampaignBehavior.Instance.Bastards.Remove(this);
         }
 
         private void KeptSecret(Hero guardian) {
@@ -129,7 +133,7 @@ namespace BastardChildren.Models
             aliveHeroes.Remove(hero);
             fatherChildren.Remove(hero);
             motherChildren.Remove(hero);
-            SubModule.Bastards.Remove(this);
+            BastardCampaignBehavior.Instance.Bastards.Remove(this);
         }
 
         public void Birth() {
@@ -142,8 +146,9 @@ namespace BastardChildren.Models
 
             // Stillbirth chance
             if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.StillbirthChance)) {
-                Utils.PrintToMessages(mother.Name + " has delivered stillborn.", 255, 100, 100);
-                SubModule.Bastards.Remove(this);
+                Utils.PrintToMessages("{=BastardBirthStillborn}{HERO_MOTHER_NAME} has delivered stillborn.", 255, 100, 100,
+                    ("HERO_MOTHER_NAME", mother.Name.ToString()));
+                BastardCampaignBehavior.Instance.Bastards.Remove(this);
                 stillbirthNum++;
             } else {
                 // Birth hero
@@ -190,15 +195,15 @@ namespace BastardChildren.Models
                     // Get clan inquiry text
                     TextObject textObject;
                     if (Hero.MainHero == mother)
-                        textObject = new TextObject("{=*}You have given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
+                        textObject = new TextObject("{=BastardBirthPlayerIsMother}You have given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
                     else {
-                        textObject = new TextObject("{=*}{BASTARDMOTHERNAME} has given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
+                        textObject = new TextObject("{=BastardBirthPlayerIsFather}{BASTARDMOTHERNAME} has given birth to {BASTARDNAME}. Will you raise them as your own and take them into your clan?", null);
                         textObject.SetTextVariable("BASTARDMOTHERNAME", mother.Name);
                     }
                     textObject.SetTextVariable("BASTARDNAME", hero.FirstName);
 
                     // Perform clan inquiry
-                    InformationManager.ShowInquiry(new InquiryData(new TextObject("{=*}Bastard Born", null).ToString(), textObject.ToString(), true, true, "Yes", "No",
+                    InformationManager.ShowInquiry(new InquiryData(new TextObject("{=BastardBirthPlayerDisplayBoxTitle}Bastard Born", null).ToString(), textObject.ToString(), true, true, "Yes", "No",
                         // Yes, take them into my clan
                         () => {
                             SetBastardGuardian(Hero.MainHero);

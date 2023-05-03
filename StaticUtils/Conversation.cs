@@ -29,8 +29,10 @@ namespace BastardChildren.StaticUtils {
 
             Hero.MainHero.Clan.Influence -= infNeeded;
 
-            Utils.PrintToMessages(bastardHero.Name.ToString() + " has been legitimized!", 255, 255, 133);
-            Utils.PrintToMessages("You spent " + infNeeded + " influence.");
+            Utils.PrintToMessages("{=MessageBastardLegitimized}{BASTARD_NAME} has been legitimized!", 255, 255, 133,
+                ("BASTARD_NAME", bastardHero.Name.ToString()));
+            Utils.PrintToMessages("{=MessageBastardLegitimizedInfluenceSpent}You spent {INFLUENCE} influence.", 255, 255, 255,
+                ("INFLUENCE", infNeeded.ToString()));
 
             Utils.LegitimizeBastardFromHero(bastardHero);
         }
@@ -39,7 +41,8 @@ namespace BastardChildren.StaticUtils {
             float infNeeded = GlobalSettings<MCMConfig>.Instance.LegitimizeInfluenceCost;
             if (!Utils.IsHeroKing(Hero.MainHero)) { infNeeded *= 2; }
 
-            explain = new TextObject("You need to have " + infNeeded + " influence.");
+            explain = new TextObject("{=BastardsLegitimizeByPlayerConfirmationOptionYesExplanation}You need to have {INFLUENCE} influence.");
+            explain.SetTextVariable("INFLUENCE", infNeeded);
 
             return Hero.MainHero.Clan.Influence >= infNeeded;
         }
@@ -63,7 +66,7 @@ namespace BastardChildren.StaticUtils {
 
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
-            if (femaleHero == null || Utils.HeroIsPregnant(femaleHero)) return false;
+            if (femaleHero == null || femaleHero.IsPregnant) return false;
 
             if (!GlobalSettings<MCMConfig>.Instance.IncestEnabled && Utils.HerosRelated(Hero.MainHero, otherHero)) return false;
 
@@ -75,7 +78,7 @@ namespace BastardChildren.StaticUtils {
             Hero otherHero = Hero.OneToOneConversationHero;
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
-            if (femaleHero != null && !Utils.HeroIsPregnant(femaleHero) && 
+            if (femaleHero != null && !femaleHero.IsPregnant && 
                 otherHero.GetRelationWithPlayer() >= Utils.GetRelationNeededForConceptionAcceptance(Hero.MainHero, otherHero)) {
                 returnVal = true;
             }
@@ -88,14 +91,12 @@ namespace BastardChildren.StaticUtils {
             Hero otherHero = Hero.OneToOneConversationHero;
             Hero? femaleHero = Utils.GetFemaleHero(Hero.MainHero, otherHero);
 
-            if (femaleHero != null && !Utils.HeroIsPregnant(femaleHero)) {
+            if (femaleHero != null && !femaleHero.IsPregnant) {
                 // Conception chance
                 if (Utils.PercentChanceCheck(GlobalSettings<MCMConfig>.Instance.ConceptionChance)) {
                     Hero father = femaleHero != Hero.MainHero ? Hero.MainHero : otherHero;
 
                     new Bastard(father, femaleHero);
-
-                    Utils.PrintToMessages(femaleHero.Name + " has gotten pregnant!", 255, 153, 204);
                 }
             }
 
