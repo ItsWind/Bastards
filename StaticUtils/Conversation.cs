@@ -116,10 +116,14 @@ namespace BastardChildren.StaticUtils {
             Hero h = Hero.OneToOneConversationHero;
 
             if (h.IsFemale) {
-                Hero.MainHero.Mother.Children.Remove(Hero.MainHero);
+                if (Hero.MainHero.Mother != null)
+                    Hero.MainHero.Mother.Children.Remove(Hero.MainHero);
+
                 Hero.MainHero.Mother = h;
             } else {
-                Hero.MainHero.Father.Children.Remove(Hero.MainHero);
+                if (Hero.MainHero.Father != null)
+                    Hero.MainHero.Father.Children.Remove(Hero.MainHero);
+
                 Hero.MainHero.Father = h;
             }
 
